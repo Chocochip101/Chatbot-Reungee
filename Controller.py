@@ -1,5 +1,5 @@
 # -*- conding: utf-8 -*-
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from Chatbot.mongo_controller import find_data, delete_backspace
 import random
 
@@ -28,6 +28,11 @@ def webhook():
         queryText = queryText[6:]
         keyword = GangneungIndex[int(queryText) - 1]
         fulfillmentText = '검색하신 버튼은 ' + keyword + '입니다!'
+
+        return {
+            "fulfillmentText": str(fulfillmentText),
+            "source": "webhookdata"
+        }
 
 
     #
@@ -139,6 +144,11 @@ def webhook():
             "flex": 0
           }
         }
+        res = {
+            'fulfillmentText':fulfillmentText,
+               'source':'webhookdata'
+        }
+        return jsonify(res)
 
     elif query_result.get('intent').get('displayName') == 'LocoMenuxTimeo':
         location = query_result.get('parameters').get('Region')
@@ -173,10 +183,7 @@ def webhook():
     #     print('here num1 = {0}'.format(num1))
     #     print('here num2 = {0}'.format(num2))
     #     fulfillmentText = 'The product of the two numbers is ' + product
-    return {
-        "fulfillmentText": str(fulfillmentText),
-        "source": "webhookdata"
-    }
+
 
 
 
