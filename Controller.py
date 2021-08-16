@@ -1,7 +1,6 @@
 # -*- conding: utf-8 -*-
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify
 
-from Chatbot.mongo_controller import find_data, delete_backspace
 import random
 
 app = Flask(__name__)
@@ -12,7 +11,6 @@ def webhook(originalDetectIntentRequest=None):
     req = request.get_json(silent=True, force=True)
 
     print(req)
-    fulfillmentText = ''
     query_result = req.get('queryResult')
 
     GangneungIndex = ['강릉 중앙 시장', '경포대', '주문진', '정동진', '오대산', '초당 순두부',
@@ -32,10 +30,10 @@ def webhook(originalDetectIntentRequest=None):
         }
 
 
-    #
+    # If StartIntent Matched
     elif query_result.get('intent').get('displayName') == 'StartIntent':
 
-        # #5개가 중복없이 뽑힌다.
+        # 5개가 중복없이 뽑힌다.
         randIndx = random.sample(GangneungIndex, 4)
         print(randIndx)
 
@@ -51,8 +49,12 @@ def webhook(originalDetectIntentRequest=None):
             "subtitle": subtitle,
             "imageUri": imageUri,
             "buttons":[
+
+                #카드 형식의 첫번쨰 버튼
                 {
+                    #버튼에 보일 텍스트
                     "text": randIndx[0],
+                    #버튼이 눌렀을 때 넘오는 값
                     "postback": "button1 is clicked"
                 },
                 {
@@ -69,13 +71,16 @@ def webhook(originalDetectIntentRequest=None):
                 }
             ]
         }
-
+        #Json 형식으로 반환
         return jsonify({
                 "fulfillmentMessages": [
+                    #카드 형식으로 보내기
                     {
                         "card":newCard,
                         "platform": platform
                     },
+
+                    #텍스트 형시으로 보내기
                     {
                         "text": {
                             "text": [
@@ -113,15 +118,6 @@ def webhook(originalDetectIntentRequest=None):
 
     elif query_result.get('intent').get('displayName') == 'LocxMenuxTimex':
         fulfillmentText = 'This is from my fulfillment of LocxMenuxTimeo'
-
-    # elif query_result.get('intent').get('displayName') == 'multiply.numbers':
-    #     num1 = int(query_result.get('parameters').get('number'))
-    #     num2 = int(query_result.get('parameters').get('number1'))
-    #     product = str(num1 * num2)
-    #     print('here num1 = {0}'.format(num1))
-    #     print('here num2 = {0}'.format(num2))
-    #     fulfillmentText = 'The product of the two numbers is ' + product
-
 
 
 
