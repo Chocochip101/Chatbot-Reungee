@@ -1,19 +1,16 @@
 # -*- conding: utf-8 -*-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
+
 from Chatbot.mongo_controller import find_data, delete_backspace
 import random
 
 app = Flask(__name__)
 
 
-@app.route('/')  # this is the home page route
-def hello_world():  # this is the home page function that generates the page code
-    return "Hello world!"
-
-
 @app.route('/webhook', methods=['POST'])
-def webhook():
+def webhook(originalDetectIntentRequest=None):
     req = request.get_json(silent=True, force=True)
+
     print(req)
     fulfillmentText = ''
     query_result = req.get('queryResult')
@@ -38,117 +35,58 @@ def webhook():
     #
     elif query_result.get('intent').get('displayName') == 'StartIntent':
 
-        #5개가 중복없이 뽑힌다.
-        randIndx = random.sample(GangneungIndex, 5)
+        # #5개가 중복없이 뽑힌다.
+        randIndx = random.sample(GangneungIndex, 4)
         print(randIndx)
-        fulfillmentText = {
-          "type": "bubble",
-          "hero": {
-            "type": "image",
-            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
-            "size": "full",
-            "aspectMode": "cover"
-          },
-          "body": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "강릉 맛집 추천 챗봇",
-                "weight": "bold",
-                "size": "xxl"
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "margin": "lg",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "vertical",
-                    "spacing": "sm",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "",
 
-                        "size": "xxs",
-                        "margin": "none",
-                        "position": "relative",
-                        "align": "start"
-                      }
-                    ]
-                  }
-                ]
-              }
+        queryResult = req.get('queryResult')
+        fulfillmentMessages = queryResult.get('fulfillmentMessages')
+        platform = fulfillmentMessages[0].get('platform')
+        card = fulfillmentMessages[0].get('card')
+        title = card.get("title")
+        subtitle = card.get("subtitle")
+        imageUri = card.get("imageUri")
+        newCard = {
+            "title":title,
+            "subtitle": subtitle,
+            "imageUri": imageUri,
+            "buttons":[
+                {
+                    "text": randIndx[0],
+                    "postback": "button1 is clicked"
+                },
+                {
+                    "text": randIndx[1],
+                    "postback": "button2 is clicked"
+                },
+                {
+                    "text": randIndx[2],
+                    "postback": "button3 is clicked"
+                },
+                {
+                    "text": randIndx[3],
+                    "postback": "button3 is clicked"
+                }
             ]
-          },
-          "footer": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "sm",
-            "contents": [
-              {
-                "type": "button",
-                "style": "link",
-                "height": "sm",
-                "action": {
-                  "type": "postback",
-                  "label": randIndx[0],
-                  "data": "경포대 is clicked"
-                }
-              },
-              {
-                "type": "button",
-                "style": "link",
-                "height": "sm",
-                "action": {
-                  "type": "postback",
-                  "label": randIndx[1],
-                  "data": "hello"
-                }
-              },
-              {
-                "type": "button",
-                "style": "link",
-                "height": "sm",
-                "action": {
-                  "type": "postback",
-                  "label": randIndx[2],
-                  "data": "장칼국수"
-                }
-              },
-              {
-                "type": "button",
-                "style": "link",
-                "height": "sm",
-                "action": {
-                  "type": "postback",
-                  "label": randIndx[3],
-                  "data": "hello"
-                }
-              },
-              {
-                "type": "button",
-                "style": "link",
-                "height": "sm",
-                "action": {
-                  "type": "uri",
-                  "label": randIndx[4],
-                  "uri": "https://linecorp.com"
-                }
-              }
-            ],
-            "flex": 0
-          }
         }
-        res = {
-            'fulfillmentText':fulfillmentText,
-               'source':'webhookdata'
-        }
-        return jsonify(res)
+
+        return jsonify({
+                "fulfillmentMessages": [
+                    {
+                        "card":newCard,
+                        "platform": platform
+                    },
+                    {
+                        "text": {
+                            "text": [
+                                "배안고파"
+                            ]
+                        },
+                        "platform": platform
+                    }
+                ]
+        })
+
 
     elif query_result.get('intent').get('displayName') == 'LocoMenuxTimeo':
         location = query_result.get('parameters').get('Region')
