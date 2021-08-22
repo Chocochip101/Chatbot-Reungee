@@ -1,44 +1,40 @@
 from pymongo import MongoClient
-from Chatbot.naver_open_api import *
+import random
 
 client = MongoClient('localhost',27017)
+
 #database
-db = client.Chatbot
+db = client.Gangneung
+Collections = db.Resturant
 
 
-def insert_data(local_data='', menu=''):
-    items = search_resturant(local_data, menu)
 
-    for item in items:
-        item.setdefault('local_data', local_data)
-        item.setdefault('menu', menu)
-        db.resturant.insert_one(item)
+def find_data_by_button(KeyWord):
+    result = []
 
-    # dict
-    return items
+    for data in Collections.find():
+        try:
+            if KeyWord in data['BtnKeyWord'].split(', '):
+                result.append(data)
+        except:
+            print("DB Error")
+    return result
 
 
-def find_data(local_data='', menu=''):
-    found_data = list(db.resturant.find({'local_data':local_data, 'menu':menu}))
+def find_by_place_and_menu(place, menu):
+    result = []
+    Entire_data = list(Collections.find())
 
-    if(len(found_data) == 0):
-         print('데이터 없음!')
-         res = insert_data(local_data, menu)
-         return res
-
-    else:
-        print('데이터 존재!')
-        return found_data
-
-def delete_backspace(title):
-    if '<b>' in title:
-        tok1, tok2 = title.split('<b>')
-        title = tok1 + tok2
-    if '</b>' in title:
-        tok1, tok2 = title.split('</b>')
-        title = tok1 + tok2
-    return title
+    for data in Entire_data:
+        try:
+            if place in list(data['Location'].split(', ')) and menu in list(data['Menu'].split(', ')):
+                result.append(data)
+        except:
+            print("DB Error")
+    result = random.sample(result, 1)
+    print(result)
+    return result
 
 
 if __name__ == '__main__':
-    print((find_data('강릉','불고기')))
+    print(find_by_place_and_menu("강릉 중앙 시장", "고구마 어묵고로케"))
