@@ -39,4 +39,4 @@ def search_resturant(location='', menu=''):
         return res['items']
 
 if __name__ == '__main__':
-    print(search_resturant('강남역', '불고기'))
+    print(search_resturant('강릉', '물회'))

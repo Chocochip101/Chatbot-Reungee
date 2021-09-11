@@ -2,7 +2,7 @@
 import math
 
 from flask import Flask, request, jsonify
-from mongo_controller import find_data_by_button, find_by_place_and_menu
+from mongo_controller import *
 
 import random
 
@@ -28,11 +28,11 @@ def webhook(originalDetectIntentRequest=None):
     query_result = req.get('queryResult')
 
     GangneungIndex = ['강릉 중앙 시장', '경포대', '주문진', '정동진', '오대산', '안목 해변',
-                      '교동 짬뽕', '커피', '장칼국수', '곰치국', '빵', '햄버거', '초당 순두부',
+                      '교동 짬뽕', '커피', '장칼국수', '곰치국', '빵', '수제 버거', '초당 순두부',
                       '회', '옹심이', '막국수', '섭국']
-    Indicies = list(range(17))
+    Indicies = list(range(len(GangneungIndex)))
 
-    # If StartIntent Matched
+    # 시작 이벤트
     if query_result.get('intent').get('displayName') == 'StartIntent':
 
         # 5개가 중복없이 뽑힌다.
@@ -59,19 +59,19 @@ def webhook(originalDetectIntentRequest=None):
                     #버튼에 보일 텍스트
                     "text": GangneungIndex[randIndx[0]],
                     #버튼이 눌렀을 때 넘오는 값
-                    "postback": "button"+ str(randIndx[0]) +" is clicked"
+                    "postback": GangneungIndex[randIndx[0]] + " 맛집을 검색합니다!"
                 },
                 {
                     "text": GangneungIndex[randIndx[1]],
-                    "postback": "button"+ str(randIndx[1]) +" is clicked"
+                    "postback": GangneungIndex[randIndx[1]] + " 맛집을 검색합니다!"
                 },
                 {
                     "text": GangneungIndex[randIndx[2]],
-                    "postback": "button"+ str(randIndx[2]) +" is clicked"
+                    "postback": GangneungIndex[randIndx[2]] + " 맛집을 검색합니다!"
                 },
                 {
                     "text": GangneungIndex[randIndx[3]],
-                    "postback": "button"+ str(randIndx[3]) +" is clicked"
+                    "postback": GangneungIndex[randIndx[3]] + " 맛집을 검색합니다!"
                 }
             ]
         }
@@ -84,18 +84,10 @@ def webhook(originalDetectIntentRequest=None):
                         "platform": platform
                     },
 
-                    #텍스트 형시으로 보내기
-                    {
-                        "text": {
-                            "text": [
-                                "StartIntent succeed"
-                            ]
-                        },
-                        "platform": platform
-                    }
                 ]
         })
 
+    # 버튼 클릭 이벤트
     elif query_result.get('intent').get('displayName') == 'ButtonClickedEvent':
 
         queryResult = req.get('queryResult')
@@ -103,15 +95,24 @@ def webhook(originalDetectIntentRequest=None):
         platform = fulfillmentMessages[1].get('platform')
 
         queryText = query_result.get('queryText')
-        queryText, _ = queryText.split(' is ')
-        queryText = queryText[6:]
-        keyword = GangneungIndex[int(queryText)]
+        queryText, _ = queryText.split(" 맛집을 검색합니다!")
+        keyword = queryText
 
         resturant_list = find_data_by_button(keyword)
-        print(resturant_list)
 
         if len(resturant_list) == 0:
-            print("No Data")
+            return jsonify({
+                "fulfillmentMessages": [
+                    # 카드 형식으로 보내기
+                    {
+                        "text":{
+                            "text":"No Data"
+                        },
+                        "platform": 'LINE'
+                    }
+                ]
+
+            })
 
         randCards = random.sample(resturant_list, 2)
         print(randCards[0]['Title'], randCards[1]['Title'])
@@ -124,7 +125,11 @@ def webhook(originalDetectIntentRequest=None):
                  {
                      "text": "네이버 지도로 보기",
                      "postback": randCards[0]['MapSearchUrl']
-                 }
+                 },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[0]['Title'] + "식당에 전화를 걸고 싶습니다!"
+                }
              ]
 
         }
@@ -140,6 +145,10 @@ def webhook(originalDetectIntentRequest=None):
                 {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[1]['MapSearchUrl']
+                },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[1]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
             ]
 
@@ -161,6 +170,18 @@ def webhook(originalDetectIntentRequest=None):
             ]
         })
 
+    elif query_result.get('intent').get('displayName') == 'ButtonClickedEvent - CallResturant':
+        title, _ = query_result['queryText'].split('에 전화를 걸고 싶습니다!')
+        Tel = find_phoneNum_by_title(title)
+        return jsonify({
+            "fulfillmentMessages": [
+                {
+                    'text': {'text': ['식당 전화번호: ' + Tel+'\n전화 번호 누를 시 연결됩니다.']},
+                    "platform": 'LINE'
+                },
+
+            ]
+        })
 
     elif query_result.get('intent').get('displayName') == 'LocoMenux2':
         print(query_result)
