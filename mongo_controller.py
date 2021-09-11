@@ -1,12 +1,11 @@
 from pymongo import MongoClient
 import random
-
+from Chatbot.naver_open_api import search_resturant
 client = MongoClient('localhost',27017)
 
 #database
 db = client.Gangneung
 Collections = db.Resturant
-
 
 
 def find_data_by_button(KeyWord):
@@ -18,8 +17,14 @@ def find_data_by_button(KeyWord):
                 result.append(data)
         except:
             print("DB Error")
+    if len(result) == 0:
+        temp = search_resturant("강릉", KeyWord)
     return result
 
+def find_phoneNum_by_title(title):
+    results = Collections.find({"Title":title})
+    for result in results:
+        return result["Tel"]
 
 def find_by_place_and_menu(place, menu):
     result = []
