@@ -87,7 +87,6 @@ def webhook(originalDetectIntentRequest=None):
                 ]
         })
 
-    # 버튼 클릭 이벤트
     elif query_result.get('intent').get('displayName') == 'ButtonClickedEvent':
 
         queryResult = req.get('queryResult')
@@ -100,19 +99,6 @@ def webhook(originalDetectIntentRequest=None):
 
         resturant_list = find_data_by_button(keyword)
 
-        if len(resturant_list) == 0:
-            return jsonify({
-                "fulfillmentMessages": [
-                    # 카드 형식으로 보내기
-                    {
-                        "text":{
-                            "text":"No Data"
-                        },
-                        "platform": 'LINE'
-                    }
-                ]
-
-            })
 
         randCards = random.sample(resturant_list, 2)
         print(randCards[0]['Title'], randCards[1]['Title'])
@@ -128,7 +114,7 @@ def webhook(originalDetectIntentRequest=None):
                  },
                 {
                     "text":"전화 걸기",
-                    "postback": randCards[0]['Title'] + "식당에 전화를 걸고 싶습니다!"
+                    "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
              ]
 
@@ -172,7 +158,9 @@ def webhook(originalDetectIntentRequest=None):
 
     elif query_result.get('intent').get('displayName') == 'ButtonClickedEvent - CallResturant':
         title, _ = query_result['queryText'].split('에 전화를 걸고 싶습니다!')
+        print(title)
         Tel = find_phoneNum_by_title(title)
+        print(Tel)
         return jsonify({
             "fulfillmentMessages": [
                 {
@@ -195,9 +183,34 @@ def webhook(originalDetectIntentRequest=None):
         for context in outputContexts:
             if context['name'][-10:] == "locomenux1":
                 loc = context['parameters']['Region']
-                print(loc)
                 break
         randCards = find_by_place_and_menu(loc, menu)
+        #Error Msg
+        if len(randCards) == 0:
+            Card1 = {
+                "title": '해당하는 식당이 없어요ㅜ^ㅜ',
+                # 3줄이 최대
+                "subtitle": '찾으시려는 식당이 존재하지 않아요',
+                "imageUri": 'https://cdn.dribbble.com/users/1013019/screenshots/3281397/icon_nodata_dribbble.jpg?compress=1&resize=400x300',
+                "buttons": [
+                    {
+                        "text": "릉이 추천 맛집 보기",
+                        "postback": '릉이 추천 맛집을 보고 싶어요!'
+                    }
+                ]
+
+            }
+
+            return jsonify({
+                "fulfillmentMessages": [
+                    # 카드 형식으로 보내기
+                    {
+                        "card": Card1,
+                        "platform": 'LINE'
+                    }
+                ]
+            })
+
         Card1 = {
             "title": randCards[0]['Title'],
             # 3줄이 최대
@@ -207,6 +220,10 @@ def webhook(originalDetectIntentRequest=None):
                 {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[0]['MapSearchUrl']
+                },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
             ]
 
@@ -219,6 +236,21 @@ def webhook(originalDetectIntentRequest=None):
                     "card": Card1,
                     "platform": 'LINE'
                 }
+            ]
+        })
+
+    elif query_result.get('intent').get('displayName') == 'LocoMenux3 - CallResturant':
+        title, _ = query_result['queryText'].split('에 전화를 걸고 싶습니다!')
+        print(title)
+        Tel = find_phoneNum_by_title(title)
+        print(Tel)
+        return jsonify({
+            "fulfillmentMessages": [
+                {
+                    'text': {'text': ['식당 전화번호: ' + Tel+'\n전화 번호 누를 시 연결됩니다.']},
+                    "platform": 'LINE'
+                },
+
             ]
         })
 
@@ -239,6 +271,32 @@ def webhook(originalDetectIntentRequest=None):
                 print(menu)
                 break
         randCards = find_by_place_and_menu(loc, menu)
+        # Error Msg
+        if len(randCards) == 0:
+            Card1 = {
+                "title": '해당하는 식당이 없어요ㅜ^ㅜ',
+                # 3줄이 최대
+                "subtitle": '찾으시려는 식당이 존재하지 않아요',
+                "imageUri": 'https://cdn.dribbble.com/users/1013019/screenshots/3281397/icon_nodata_dribbble.jpg?compress=1&resize=400x300',
+                "buttons": [
+                    {
+                        "text": "릉이 추천 맛집 보기",
+                        "postback": '릉이 추천 맛집을 보고 싶어요!'
+                    }
+                ]
+
+            }
+
+            return jsonify({
+                "fulfillmentMessages": [
+                    # 카드 형식으로 보내기
+                    {
+                        "card": Card1,
+                        "platform": 'LINE'
+                    }
+                ]
+            })
+
         Card1 = {
             "title": randCards[0]['Title'],
             # 3줄이 최대
@@ -249,6 +307,10 @@ def webhook(originalDetectIntentRequest=None):
                 {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[0]['MapSearchUrl']
+                },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
             ]
 
@@ -261,6 +323,21 @@ def webhook(originalDetectIntentRequest=None):
                     "card": Card1,
                     "platform": 'LINE'
                 }
+            ]
+        })
+
+    elif query_result.get('intent').get('displayName') == 'LocxMenuo3 - CallResturant':
+        title, _ = query_result['queryText'].split('에 전화를 걸고 싶습니다!')
+        print(title)
+        Tel = find_phoneNum_by_title(title)
+        print(Tel)
+        return jsonify({
+            "fulfillmentMessages": [
+                {
+                    'text': {'text': ['식당 전화번호: ' + Tel+'\n전화 번호 누를 시 연결됩니다.']},
+                    "platform": 'LINE'
+                },
+
             ]
         })
 
@@ -272,6 +349,32 @@ def webhook(originalDetectIntentRequest=None):
         if type(menu) != str:
             menu = loc[0]
         randCards = find_by_place_and_menu(loc, menu)
+        #Error Msg
+        if len(randCards) == 0:
+            Card1 = {
+                "title": '해당하는 식당이 없어요ㅜ^ㅜ',
+                # 3줄이 최대
+                "subtitle": '찾으시려는 식당이 존재하지 않아요',
+                "imageUri": 'https://cdn.dribbble.com/users/1013019/screenshots/3281397/icon_nodata_dribbble.jpg?compress=1&resize=400x300',
+                "buttons": [
+                    {
+                        "text": "릉이 추천 맛집 보기",
+                        "postback": '릉이 추천 맛집을 보고 싶어요!'
+                    }
+                ]
+
+            }
+
+            return jsonify({
+                "fulfillmentMessages": [
+                    # 카드 형식으로 보내기
+                    {
+                        "card": Card1,
+                        "platform": 'LINE'
+                    }
+                ]
+            })
+
         Card1 = {
             "title": randCards[0]['Title'],
             # 3줄이 최대
@@ -282,6 +385,10 @@ def webhook(originalDetectIntentRequest=None):
                 {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[0]['MapSearchUrl']
+                },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
             ]
 
@@ -297,53 +404,84 @@ def webhook(originalDetectIntentRequest=None):
             ]
         })
 
-# a = {'queryText': '장칼국수',
-#     'action': 'LocoMenux1.LocoMenux1-custom',
-#     'parameters': {},
-#      'allRequiredParamsPresent': True,
-#      'fulfillmentMessages': [
-#          {'card': {'title': 'LocoMenux2',
-#                    'subtitle': 'LocoMemux2인텐트',
-#                    'imageUri': 'https://img.siksinhot.com/place/1548828274568053.jpg?w=307&h=300&c=Y',
-#                    'buttons': [
-#                        {'text': 'LocoMenux2',
-#                         'postback': 'https://www.google.com/search?q=%EA%B2%BD%ED%8F%AC%EC%A0%95%EC%9C%A1%EC%A0%90%EC%8B%9D%EB%8B%B9%EC%95%A4%EC%A1%B0%EA%B0%9C%EA%B5%AC%EC%9D%B4&sxsrf=ALeKk0140eU3ywowHwlce9I0VKNIsmPzLA:1629614058344&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjq1cW4gcTyAhXbyYsBHXeYDZ4Q_AUoAXoECAEQAw&biw=2048&bih=962#imgrc=y-8nKfJ33SLCkM'
-#                         }
-#                         ]
-#                      },'platform': 'LINE'},
-#                     {'text': {'text': ['']}
-#                     }
-#                     ],
-#                     'outputContexts': [
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/locomenux1',
-#                          'lifespanCount': 5,
-#                          'parameters': {'Button_name': 'Button',
-#                          'Button_name.original': 'button1',
-#                          'Region': '경포대', 'Region.original': '경포대'}
-#                          },
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/startintent',
-#                          'lifespanCount': 5,
-#                          'parameters': {'Button_name': 'Button', 'Button_name.original': 'button1', 'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/research',
-#                          'lifespanCount': 5,
-#                          'parameters': {'Button_name': 'Button', 'Button_name.original': 'button1', 'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/locomenux2-followup', 'lifespanCount': 2},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/locomenux1-followup', 'lifespanCount': 1,
-#                          'parameters': {'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/locomenuo',
-#                          'lifespanCount': 2, 'parameters': {'Button_name': 'Button', 'Button_name.original': 'button1', 'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/locxmenuo1', 'lifespanCount': 2,
-#                          'parameters': {'Button_name': 'Button', 'Button_name.original': 'button1', 'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/locomenux2', 'lifespanCount': 4, 'parameters': {'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/buttonclickedevent',
-#                          'lifespanCount': 2, 'parameters': {'Button_name': 'Button', 'Button_name.original': 'button1', 'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/locxmenux', 'lifespanCount': 2, 'parameters': {'Button_name': 'Button', 'Button_name.original': 'button1', 'Region': '경포대', 'Region.original': '경포대'}},
-#                         {'name': 'projects/gangneung-sscq/agent/sessions/b20f697d-4fb8-3270-9f21-6b0d4c4ec97f/contexts/__system_counters__', 'parameters': {'no-input': 0.0, 'no-match': 0.0}}],
-#                         'intent': {'name': 'projects/gangneung-sscq/agent/intents/a0a5551a-f571-4a50-8288-b88fdcc2893d', 'displayName': 'LocoMenux2'}, 'intentDetectionConfidence': 1.0, 'languageCode': 'en'}
+    elif query_result.get('intent').get('displayName') == 'LocoMenuo - CallResturant':
+        title, _ = query_result['queryText'].split('에 전화를 걸고 싶습니다!')
+        print(title)
+        Tel = find_phoneNum_by_title(title)
+        print(Tel)
+        return jsonify({
+            "fulfillmentMessages": [
+                {
+                    'text': {'text': ['식당 전화번호: ' + Tel+'\n전화 번호 누를 시 연결됩니다.']},
+                    "platform": 'LINE'
+                },
+
+            ]
+        })
+
+    elif query_result.get('intent').get('displayName') == 'AnotherData':
+        keyword = random.sample(GangneungIndex, 1)
+        print(keyword)
+        resturant_list = find_data_by_button(keyword[0])
+
+        randCards = random.sample(resturant_list, 2)
+        print(randCards[0]['Title'], randCards[1]['Title'])
+        Card1 = {
+            "title": randCards[0]['Title'],
+            # 3줄이 최대
+            "subtitle": make_Rating(randCards[0]['Rating']) + "\n" + randCards[0]['Price'] + "\n" + randCards[0]['Open_Close'],
+            "imageUri": randCards[0]['ImgLink'],
+             "buttons": [
+                 {
+                     "text": "네이버 지도로 보기",
+                     "postback": randCards[0]['MapSearchUrl']
+                 },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
+                }
+             ]
+
+        }
+        Card2 = {
+            "title": randCards[1]['Title'],
+            # 3줄이 최대
+            "subtitle": make_Rating(randCards[1]['Rating']) + "\n" + randCards[1]['Price'] + "\n" + randCards[1][
+                'Open_Close'],
+            "imageUri": randCards[1]['ImgLink'],
+
+            "buttons": [
+
+                {
+                    "text": "네이버 지도로 보기",
+                    "postback": randCards[1]['MapSearchUrl']
+                },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[1]['Title'] + "에 전화를 걸고 싶습니다!"
+                }
+            ]
+
+        }
+        # Json 형식으로 반환
+        return jsonify({
+            "fulfillmentMessages": [
+                # 카드 형식으로 보내기
+                {
+                    "card": Card1,
+                    "platform": 'LINE'
+                },
+
+                # 카드 형식으로 보내기
+                {
+                    "card": Card2,
+                    "platform": 'LINE'
+                }
+            ]
+        })
 
 
 
 if __name__ == '__main__':
     print("Hello ChatBot")
     app.run(host='0.0.0.0', port=5000)
-
