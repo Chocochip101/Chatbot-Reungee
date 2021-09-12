@@ -21,10 +21,12 @@ def find_data_by_button(KeyWord):
         temp = search_resturant("강릉", KeyWord)
     return result
 
+
 def find_phoneNum_by_title(title):
     results = Collections.find({"Title":title})
     for result in results:
-        return result["Tel"]
+        return str(result["Tel"])
+
 
 def find_by_place_and_menu(place, menu):
     result = []
@@ -32,12 +34,13 @@ def find_by_place_and_menu(place, menu):
 
     for data in Entire_data:
         try:
-            if place in list(data['Location'].split(', ')) and menu in list(data['Menu'].split(', ')):
+            if place in data['Location'] and menu in data['Menu']:
                 result.append(data)
         except:
             print("DB Error")
+    if len(result) == 0:
+        return result
     result = random.sample(result, 1)
-    print(result)
     return result
 
 
