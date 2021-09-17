@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import random
-from Chatbot.naver_open_api import search_resturant
+from naver_open_api import search_resturant
 client = MongoClient('localhost',27017)
 
 #database
