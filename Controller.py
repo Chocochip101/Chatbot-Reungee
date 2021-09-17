@@ -3,6 +3,7 @@ import math
 
 from flask import Flask, request, jsonify
 from mongo_controller import *
+import ssl
 
 import random
 
@@ -484,4 +485,4 @@ def webhook(originalDetectIntentRequest=None):
 
 if __name__ == '__main__':
     print("Hello ChatBot")
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port="443", ssl_context="adhoc")
