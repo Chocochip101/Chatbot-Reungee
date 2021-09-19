@@ -2,12 +2,16 @@
 import math
 
 from flask import Flask, request, jsonify
-from mongo_controller import *
-import ssl
+from Chatbot.mongo_controller import *
 
 import random
 
 app = Flask(__name__)
+
+def make_Menu_URL(MapSearchUrl):
+    _, ResturantNumber = MapSearchUrl.split("https://m.place.naver.com/restaurant/")
+    ResturantNumber, _ = ResturantNumber.split("/location?subtab=location")
+    return 'https://m.place.naver.com/restaurant/' + ResturantNumber + "/menu/list"
 
 def make_Rating(r):
     r = float(r)
@@ -20,6 +24,13 @@ def make_Rating(r):
     res += str(r)
     res += ")"
     return res
+
+def NearBy(MapSearchUrl):
+    _, ResturantNumber = MapSearchUrl.split("https://m.place.naver.com/restaurant/")
+    ResturantNumber, _ = ResturantNumber.split("/location?subtab=location")
+    #  https://m.place.naver.com/restaurant/356468470/around?subtab=location&filter=attraction&sort=reviewCount
+    return 'https://m.place.naver.com/restaurant/' + ResturantNumber + '/around?filter=attraction&sort=reviewCount'
+
 
 @app.route('/webhook', methods=['POST'])
 def webhook(originalDetectIntentRequest=None):
@@ -110,13 +121,21 @@ def webhook(originalDetectIntentRequest=None):
             "imageUri": randCards[0]['ImgLink'],
              "buttons": [
                  {
+                     "text": "메뉴 보기",
+                     "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                 },
+                 {
                      "text": "네이버 지도로 보기",
                      "postback": randCards[0]['MapSearchUrl']
                  },
                 {
                     "text":"전화 걸기",
                     "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
-                }
+                },
+                 {
+                     "text": "주변에 가볼 만한 곳",
+                     "postback": NearBy(randCards[0]['MapSearchUrl'])
+                 }
              ]
 
         }
@@ -128,7 +147,10 @@ def webhook(originalDetectIntentRequest=None):
             "imageUri": randCards[1]['ImgLink'],
 
             "buttons": [
-
+                {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
                 {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[1]['MapSearchUrl']
@@ -136,7 +158,11 @@ def webhook(originalDetectIntentRequest=None):
                 {
                     "text":"전화 걸기",
                     "postback": randCards[1]['Title'] + "에 전화를 걸고 싶습니다!"
-                }
+                },
+                 {
+                     "text": "주변에 가볼 만한 곳",
+                     "postback": NearBy(randCards[0]['MapSearchUrl'])
+                 }
             ]
 
         }
@@ -189,7 +215,7 @@ def webhook(originalDetectIntentRequest=None):
         #Error Msg
         if len(randCards) == 0:
             Card1 = {
-                "title": '해당하는 식당이 없어요ㅜ^ㅜ',
+                "title": '해당하는 식당이 없어요',
                 # 3줄이 최대
                 "subtitle": '찾으시려는 식당이 존재하지 않아요',
                 "imageUri": 'https://cdn.dribbble.com/users/1013019/screenshots/3281397/icon_nodata_dribbble.jpg?compress=1&resize=400x300',
@@ -208,7 +234,8 @@ def webhook(originalDetectIntentRequest=None):
                     {
                         "card": Card1,
                         "platform": 'LINE'
-                    }
+                    },
+
                 ]
             })
 
@@ -219,6 +246,10 @@ def webhook(originalDetectIntentRequest=None):
             "imageUri": randCards[0]['ImgLink'],
             "buttons": [
                 {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
+                {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[0]['MapSearchUrl']
                 },
@@ -226,15 +257,53 @@ def webhook(originalDetectIntentRequest=None):
                     "text":"전화 걸기",
                     "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
+                ,
+                {
+                    "text": "주변에 가볼 만한 곳",
+                    "postback": NearBy(randCards[0]['MapSearchUrl'])
+                }
             ]
 
         }
+        Card2 = {
+            "title": randCards[1]['Title'],
+            # 3줄이 최대
+            "subtitle": make_Rating(randCards[1]['Rating']) + "\n" + randCards[1]['Price'] + "\n" + randCards[1][
+                'Open_Close'],
+            "imageUri": randCards[1]['ImgLink'],
 
+            "buttons": [
+                {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
+                {
+                    "text": "네이버 지도로 보기",
+                    "postback": randCards[1]['MapSearchUrl']
+                },
+                {
+                    "text": "전화 걸기",
+                    "postback": randCards[1]['Title'] + "에 전화를 걸고 싶습니다!"
+                }
+                ,
+                {
+                    "text": "주변에 가볼 만한 곳",
+                    "postback": NearBy(randCards[0]['MapSearchUrl'])
+                }
+            ]
+
+        }
         return jsonify({
             "fulfillmentMessages": [
                 # 카드 형식으로 보내기
                 {
                     "card": Card1,
+                    "platform": 'LINE'
+                },
+
+                # 카드 형식으로 보내기
+                {
+                    "card": Card2,
                     "platform": 'LINE'
                 }
             ]
@@ -275,7 +344,7 @@ def webhook(originalDetectIntentRequest=None):
         # Error Msg
         if len(randCards) == 0:
             Card1 = {
-                "title": '해당하는 식당이 없어요ㅜ^ㅜ',
+                "title": '해당하는 식당이 없어요',
                 # 3줄이 최대
                 "subtitle": '찾으시려는 식당이 존재하지 않아요',
                 "imageUri": 'https://cdn.dribbble.com/users/1013019/screenshots/3281397/icon_nodata_dribbble.jpg?compress=1&resize=400x300',
@@ -306,6 +375,10 @@ def webhook(originalDetectIntentRequest=None):
             "imageUri": randCards[0]['ImgLink'],
             "buttons": [
                 {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
+                {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[0]['MapSearchUrl']
                 },
@@ -313,21 +386,59 @@ def webhook(originalDetectIntentRequest=None):
                     "text":"전화 걸기",
                     "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
+                ,
+                {
+                    "text": "주변에 가볼 만한 곳",
+                    "postback": NearBy(randCards[0]['MapSearchUrl'])
+                }
             ]
 
         }
+        Card2 = {
+            "title": randCards[1]['Title'],
+            # 3줄이 최대
+            "subtitle": make_Rating(randCards[1]['Rating']) + "\n" + randCards[1]['Price'] + "\n" + randCards[1][
+                'Open_Close'],
+            "imageUri": randCards[1]['ImgLink'],
 
+            "buttons": [
+                {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
+                {
+                    "text": "네이버 지도로 보기",
+                    "postback": randCards[1]['MapSearchUrl']
+                },
+                {
+                    "text": "전화 걸기",
+                    "postback": randCards[1]['Title'] + "에 전화를 걸고 싶습니다!"
+                }
+                ,
+                {
+                    "text": "주변에 가볼 만한 곳",
+                    "postback": NearBy(randCards[0]['MapSearchUrl'])
+                }
+            ]
+
+        }
         return jsonify({
             "fulfillmentMessages": [
                 # 카드 형식으로 보내기
                 {
                     "card": Card1,
                     "platform": 'LINE'
+                },
+
+                # 카드 형식으로 보내기
+                {
+                    "card": Card2,
+                    "platform": 'LINE'
                 }
             ]
         })
 
-    elif query_result.get('intent').get('displayName') == 'LocxMenuo3 - CallResturant':
+    elif query_result.get('intent').get('displayName') == 'LocxMenuo33 - CallResturant':
         title, _ = query_result['queryText'].split('에 전화를 걸고 싶습니다!')
         print(title)
         Tel = find_phoneNum_by_title(title)
@@ -350,10 +461,11 @@ def webhook(originalDetectIntentRequest=None):
         if type(menu) != str:
             menu = loc[0]
         randCards = find_by_place_and_menu(loc, menu)
+
         #Error Msg
         if len(randCards) == 0:
             Card1 = {
-                "title": '해당하는 식당이 없어요ㅜ^ㅜ',
+                "title": '해당하는 식당이 없어요',
                 # 3줄이 최대
                 "subtitle": '찾으시려는 식당이 존재하지 않아요',
                 "imageUri": 'https://cdn.dribbble.com/users/1013019/screenshots/3281397/icon_nodata_dribbble.jpg?compress=1&resize=400x300',
@@ -384,6 +496,10 @@ def webhook(originalDetectIntentRequest=None):
             "imageUri": randCards[0]['ImgLink'],
             "buttons": [
                 {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
+                {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[0]['MapSearchUrl']
                 },
@@ -391,15 +507,55 @@ def webhook(originalDetectIntentRequest=None):
                     "text":"전화 걸기",
                     "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
+                ,
+                {
+                    "text": "주변에 가볼 만한 곳",
+                    "postback": NearBy(randCards[0]['MapSearchUrl'])
+                }
             ]
 
         }
+        Card2 = {
+            "title": randCards[1]['Title'],
+            # 3줄이 최대
+            "subtitle": make_Rating(randCards[1]['Rating']) + "\n" + randCards[1]['Price'] + "\n" + randCards[1][
+                'Open_Close'],
+            "imageUri": randCards[1]['ImgLink'],
+
+            "buttons": [
+                {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
+                {
+                    "text": "네이버 지도로 보기",
+                    "postback": randCards[1]['MapSearchUrl']
+                },
+                {
+                    "text":"전화 걸기",
+                    "postback": randCards[1]['Title'] + "에 전화를 걸고 싶습니다!"
+                }
+                ,
+                {
+                    "text": "주변에 가볼 만한 곳",
+                    "postback": NearBy(randCards[0]['MapSearchUrl'])
+                }
+            ]
+
+        }
+
 
         return jsonify({
             "fulfillmentMessages": [
                 # 카드 형식으로 보내기
                 {
                     "card": Card1,
+                    "platform": 'LINE'
+                },
+
+                # 카드 형식으로 보내기
+                {
+                    "card": Card2,
                     "platform": 'LINE'
                 }
             ]
@@ -434,6 +590,10 @@ def webhook(originalDetectIntentRequest=None):
             "imageUri": randCards[0]['ImgLink'],
              "buttons": [
                  {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
+                 {
                      "text": "네이버 지도로 보기",
                      "postback": randCards[0]['MapSearchUrl']
                  },
@@ -441,6 +601,11 @@ def webhook(originalDetectIntentRequest=None):
                     "text":"전화 걸기",
                     "postback": randCards[0]['Title'] + "에 전화를 걸고 싶습니다!"
                 }
+                 ,
+                 {
+                     "text": "주변에 가볼 만한 곳",
+                     "postback": NearBy(randCards[0]['MapSearchUrl'])
+                 }
              ]
 
         }
@@ -452,7 +617,10 @@ def webhook(originalDetectIntentRequest=None):
             "imageUri": randCards[1]['ImgLink'],
 
             "buttons": [
-
+                {
+                    "text": "메뉴 보기",
+                    "postback": make_Menu_URL(randCards[0]['MapSearchUrl'])
+                },
                 {
                     "text": "네이버 지도로 보기",
                     "postback": randCards[1]['MapSearchUrl']
@@ -460,6 +628,11 @@ def webhook(originalDetectIntentRequest=None):
                 {
                     "text":"전화 걸기",
                     "postback": randCards[1]['Title'] + "에 전화를 걸고 싶습니다!"
+                }
+                ,
+                {
+                    "text": "주변에 가볼 만한 곳",
+                    "postback": NearBy(randCards[0]['MapSearchUrl'])
                 }
             ]
 
@@ -481,7 +654,8 @@ def webhook(originalDetectIntentRequest=None):
             ]
         })
 
-
+    elif query_result.get('intent').get('displayName') == 'HighRating':
+        print(3)
 
 if __name__ == '__main__':
     print("Hello ChatBot")
