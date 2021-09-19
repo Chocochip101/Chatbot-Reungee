@@ -16,7 +16,7 @@ def find_data_by_button(KeyWord):
             if KeyWord in data['BtnKeyWord'].split(', '):
                 result.append(data)
         except:
-            print("DB Error")
+            print("")
     if len(result) == 0:
         temp = search_resturant("강릉", KeyWord)
     return result
@@ -38,11 +38,15 @@ def find_by_place_and_menu(place, menu):
                 result.append(data)
         except:
             print("DB Error")
-    if len(result) == 0:
+    if len(result) <= 0:
         return result
-    result = random.sample(result, 1)
+    result = random.sample(result, 2)
     return result
 
+def find_by_rating():
+    Entire_Data = Collections.find().sort({"Rating": 1})
+    for data in Entire_Data:
+        print(data)
 
 if __name__ == '__main__':
-    print(find_by_place_and_menu("강릉 중앙 시장", "고구마 어묵고로케"))
+    print(find_by_rating())
