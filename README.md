@@ -1,13 +1,11 @@
-# AI(인공지능) 기반 챗봇 맛집 추천 서비스
-##강릉 맛집 추천 챗봇 '릉이'
-
+# AI(인공지능) 기반 챗봇 맛집 추천 서비스-강릉 맛집 추천 챗봇 '릉이'
+## 프로젝트 소개
 
 
 본 서비스는 인간이 가장 이해하기 쉬운 '대화'라는 형태의 서비스인 챗봇을 활용하여 많은 사람이 사용하는 메신저 앱에서 직접 검색하지 않아도 대화를 통해 강릉 지역의 맛집을 추천한다.
 
-![star04_2](/uploads/5db4db889a4644135f7c0d1b1e934a83/star04_2.PNG)
 
-![git_font_2](/uploads/c426a7c54acee66babac00cffe20b2b5/git_font_2.gif)
+## 주요 기능
 
 **-SW**
 
@@ -45,28 +43,26 @@
 
  1. 사용자들끼리 면접 팁이나 면접합격사례 후기 등을 공유하여 서로에게 도움이 될 수 있도록 한다.
 
-
-![git_font_3](/uploads/7393234e7319bc2e11256c9c8fd8cb52/git_font_3.gif)
-
-![star04_1](/uploads/5980382250a39d73b369da6c399cac70/star04_1.PNG)
-
-![git_font_4](/uploads/17ec61ce462cdcb0348d7f26c27a30f1/git_font_4.gif)
+## 구성도
 
 
-■ DialogFlow : 자연어 처리 및 머신러닝
+## 주요 기술
 
-■ Flask : Back-End 개발
 
-■ Naver Open Api : 웹 페이지 개발
+■ DialogFlow : Google Machine Learning Engine을 통한 자연어 기반의 사용자 발화 처리
 
-■ Python & Selenium : 사용자가 입력한 자기소개서의 내용을 분석하여 특성을 수치화 하는 알고리즘 제작 후 질문 선별시 반영 
+■ Flask : Back-End 영역에서의 통신
 
-■ MongoDB : 웹 페이지 개발
+■ Naver Open Api : 강릉 맛집 정보 취합
+
+■ Python & Selenium : 취합한 맛집 정보들의 추가 정보(가격, 영업시간 등)의 크롤링
+
+■ MongoDB : 강릉 맛집 정보 저장을 위한 DB
 
 ■ AWS(Amazon Web Server) : 클라우드 서버를 활용한 유저와 관리자의 사용성 증가 및 유지보수 배포 효율 증가 
 
 
-![git_font_5](/uploads/f48415cdf07a446a938195add8e0cd79/git_font_5.gif)
+## 역할 분담
 
 | 멘토 | 역할 |
 | ------ | ------ |
