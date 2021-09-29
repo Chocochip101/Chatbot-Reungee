@@ -1,12 +1,13 @@
 import json
 from urllib import parse, request
 
-def search_resturant(keyword):
+def search_resturant(location='', menu=''):
 
     clientId = "VhbUCLMP0G9GktY1da2R"
     clientSecret = "aPV80eOIok"
     # keyword = location + ' ' + time + ' '  + menu
 
+    keyword = location + ' ' + menu
     #변수 keyword URL encoding
     enc_text = parse.quote(keyword)
 
@@ -38,4 +39,4 @@ def search_resturant(keyword):
         return res['items']
 
 if __name__ == '__main__':
-    print(search_resturant('강남역 새벽 고기'))
+    print(search_resturant('강릉', '물회'))

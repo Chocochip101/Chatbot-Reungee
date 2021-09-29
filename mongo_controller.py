@@ -1,34 +1,52 @@
 from pymongo import MongoClient
-from Chatbot.naver_open_api import *
-
+import random
+from naver_open_api import search_resturant
 client = MongoClient('localhost',27017)
+
 #database
-db = client.Chatbot
+db = client.Gangneung
+Collections = db.Resturant
 
 
-def insert_data(local_data):
-    items = search_resturant(local_data)
+def find_data_by_button(KeyWord):
+    result = []
 
-    for item in items:
-        item.setdefault('local_data', local_data)
-        db.resturant.insert_one(item)
+    for data in Collections.find():
+        try:
+            if KeyWord in data['BtnKeyWord'].split(', '):
+                result.append(data)
+        except:
+            print("")
+    if len(result) == 0:
+        temp = search_resturant("강릉", KeyWord)
+    return result
 
-    # dict
-    return items
+
+def find_phoneNum_by_title(title):
+    results = Collections.find({"Title":title})
+    for result in results:
+        return str(result["Tel"])
 
 
-def find_data_by_location(keyword):
-    found_data = list(db.resturant.find({'local_data':keyword}))
+def find_by_place_and_menu(place, menu):
+    result = []
+    Entire_data = list(Collections.find())
 
-    if(len(found_data) == 0):
-         print('데이터 없음!')
-         res = insert_data(keyword)
-         return res
+    for data in Entire_data:
+        try:
+            if place in data['Location'] and menu in data['Menu']:
+                result.append(data)
+        except:
+            print("DB Error")
+    if len(result) < 2:
+        return result
+    result = random.sample(result, 2)
+    return result
 
-    else:
-        print('데이터 존재!')
-        return found_data
-
+def find_by_rating():
+    Entire_Data = Collections.find().sort({"Rating": 1})
+    for data in Entire_Data:
+        print(data)
 
 if __name__ == '__main__':
-    print(find_data_by_location('홍대 저녁'))
+    print(find_by_rating())
