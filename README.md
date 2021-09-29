@@ -21,6 +21,11 @@
  2. 사용자가 입력한 발화의 의도(Intent)와 개체(Entity) 인식 후, 사용자가 원하는 답변 파악
  3. Back-end 영역에서 답변을 가져와 DialogFlow에서 Line으로 전달하여 Chat bot 서비스를 구현  
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73146678/135220998-afddf15e-f91a-42a8-af0c-4611c9dd6ee2.png"  width="350" height="200"/>
+</p>
+  
+
  
 #### 바로 연결 버튼
 
