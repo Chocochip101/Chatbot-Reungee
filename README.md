@@ -101,9 +101,9 @@
 
 | 멘티 | 역할 | Contact | 
 | ------ | ------ | ------ |
-| 권기호 | 프로젝트 관리 총괄 및 정기회의 일정 수립, 요구사항 정의 및 시스템 설계, Back-End 개발| [Github](https://github.com/Chocochip101), [Blog](https://chocochip101.tistory.com/), [Email](chocochip.dev@gmail.com) |
-| 남주연 | - | [Github](https://github.com/NamJuYeon) |
-| 이성호 | - | [Github](https://github.com/sean03101) |
+| 권기호 | 프로젝트 관리 총괄 및 정기회의 일정 수립, 요구사항 정의 및 시스템 설계, DialogFlow Intent 학습, Back-End 개발, AWS 서버 구축 | [Github](https://github.com/Chocochip101), [Blog](https://chocochip101.tistory.com/), [Email](chocochip.dev@gmail.com) |
+| 남주연 | 프로젝트 방향성 설정, Database 구축과 DialogFlow Entity 설정 | [Github](https://github.com/NamJuYeon) |
+| 이성호 | 프로젝트 방향성 설정, Dialogflow Intent 학습, Front-End 개발과 디버깅 및 Database 관련 추천 시스템 정립 | [Github](https://github.com/sean03101) |
 
 
 
