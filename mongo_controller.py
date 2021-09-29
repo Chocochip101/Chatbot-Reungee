@@ -38,7 +38,7 @@ def find_by_place_and_menu(place, menu):
                 result.append(data)
         except:
             print("DB Error")
-    if len(result) <= 0:
+    if len(result) < 2:
         return result
     result = random.sample(result, 2)
     return result

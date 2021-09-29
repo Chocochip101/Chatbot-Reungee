@@ -25,29 +25,26 @@
 #### 바로 연결 버튼
 
  1. 사용자에게 내비게이션 역할을 하여 쉽게 챗봇 사용 가능
- - 대화뿐만 아니라 시각적으로 어떤 키워드로 강릉 맛집을 검색하는지 보여준다. 
-
- 2. 강릉 관련 키워드를 통한 연결이나 webUrl로의 연결의 이동 유도 
- - 
-
- 3. 필요한 데이터나 연결 Url을 Back-End 영역에서 처리해 전달 
- - 
+ 2. 강릉 관련 키워드를 통한 연결이나 webUrl로의 연결의 이동 유도
+ 3. 필요한 데이터나 연결 Url을 Back-End 영역에서 처리해 전달
 
 
-#### 추천 서비스
+#### 맛집 추천 서비스
 
- 1.  
- - 
+ 1. 사용자가 원하는 맛집을 DialogFlow의 장소, 메뉴 Entity를 통해 맛집의 종류를 파악
+ 2. 크롤링과 Naver Open API를 활용하여 쌓은 Data base를 이용하여 사용자에게 추천
+ 3. 식당 이미지, 별점, 가격대, 영업시간을 제공
 
- 2.  
- - 
 
- 3.  
- - 
+
+#### 부가 정보
+
+ 1. 사용자에게 식당을 추천해줬을 때 버튼 형식으로 다양한 부자 정보 제공
+ 2. 메뉴, 네이버 지도, 식당 전화번호, 주변 관광 명소에 대한 부가 정보
 
 #### '릉이' 추천 맛집
 
- 1.  
+ 1.  추가 예정
 
 
 ## 구성도
@@ -58,13 +55,13 @@
 
 ■ DialogFlow : Google Machine Learning Engine을 통한 자연어 기반의 사용자 발화 처리
 
-■ Flask : Back-End 영역에서의 통신
+■ Flask : Back-End 영역에서 Dialogflow와 DataBase 통신
 
-■ Naver Open Api : 강릉 맛집 정보 취합
+■ Naver Open Api : 메뉴별 강릉 맛집 정보 취합
 
 ■ Python & Selenium : 취합한 맛집 정보들의 추가 정보(가격, 영업시간 등)의 크롤링
 
-■ MongoDB : 강릉 맛집 정보 저장을 위한 DB
+■ MongoDB : 강릉 맛집 정보 저장을 위한 Database
 
 ■ AWS(Amazon Web Server) : 클라우드 서버를 활용한 유저와 관리자의 사용성 증가 및 유지보수 배포 효율 증가 
 
@@ -73,13 +70,13 @@
 
 | 멘토 | 역할 | Contact |
 | ------ | ------ | ------ |
-| 서지훈 | 온라인 미팅과 주기적인 TColla, KakaoTalk을 통한 피드백 및 이슈 해결 | ------ |
+| 서지훈 | 온라인 미팅과 주기적인 TColla, KakaoTalk을 통한 피드백 및 이슈 해결 | - |
 
 
 | 멘티 | 역할 | Contact | 
 | ------ | ------ | ------ |
-| 권기호 | 프로젝트 관리 총괄 및 정기회의 일정 수립, 요구사항 정의 및 시스템 설계, Back-End 개발| [Github](https://github.com/Chocochip101), [BLOG](https://chocochip101.tistory.com/), [Email](chocochip.dev@gmail.com) |
-| 남주연 | ... | ... |
-| 이성호 | ... | ... |
+| 권기호 | 프로젝트 관리 총괄 및 정기회의 일정 수립, 요구사항 정의 및 시스템 설계, Back-End 개발| [Github](https://github.com/Chocochip101), [Blog](https://chocochip101.tistory.com/), [Email](chocochip.dev@gmail.com) |
+| 남주연 | - | - |
+| 이성호 | - | - |
 
 
