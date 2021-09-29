@@ -3,10 +3,12 @@
 
 본 서비스는 인간이 가장 이해하기 쉬운 '대화'라는 형태의 서비스인 챗봇을 활용하여 많은 사람이 사용하는 메신저 앱에서 직접 검색하지 않아도 대화를 통해 강릉 지역의 맛집을 추천한다.  
   
-<a href="https://chocochip101.tistory.com/entry/%EA%B0%95%EB%A6%89-%EC%B1%97%EB%B4%87-%EB%A6%89%EC%9D%B4-Images?category=962284">
-  <img src="https://user-images.githubusercontent.com/73146678/134644150-0e49b0cd-dd83-416c-8225-c44ea5f6f766.png"  width="200" height="200"/>
-  <img src="https://user-images.githubusercontent.com/73146678/134645565-10e7c13a-5382-4bd5-afed-6f916bc29381.png"  width="300" height="200"/>
-</a>
+<p align="center">
+  <a href="https://chocochip101.tistory.com/entry/%EA%B0%95%EB%A6%89-%EC%B1%97%EB%B4%87-%EB%A6%89%EC%9D%B4-Images?category=962284">
+    <img src="https://user-images.githubusercontent.com/73146678/134644150-0e49b0cd-dd83-416c-8225-c44ea5f6f766.png"  width="200" height="200"/>
+    <img src="https://user-images.githubusercontent.com/73146678/134645565-10e7c13a-5382-4bd5-afed-6f916bc29381.png"  width="300" height="200"/>
+  </a>
+</p>
 
 
 
