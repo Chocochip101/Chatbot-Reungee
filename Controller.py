@@ -201,7 +201,7 @@ def webhook(originalDetectIntentRequest=None):
     elif query_result.get('intent').get('displayName') == 'LocoMenux2':
         print(query_result)
         #List or Str
-        menu = query_result.get('parameters')['Food']
+        menu = query_result.get('parameters')['food']
         if type(menu) != str:
             menu = menu[0]
         outputContexts = query_result.get('outputContexts')
