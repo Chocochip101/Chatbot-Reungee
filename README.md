@@ -44,7 +44,7 @@
  3. 식당 이미지, 별점, 가격대, 영업시간을 제공
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73146678/135221392-028e7a8c-d0c5-4531-a49b-06e27fb86a88.png"  width="250" height="300"/>
+  <img src="https://user-images.githubusercontent.com/73146678/135222029-c32a4062-c9d7-49dc-9940-e04596813444.png"  width="200" height="300"/>
 </p>
 
 
