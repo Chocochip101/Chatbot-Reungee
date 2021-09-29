@@ -22,7 +22,7 @@
  3. Back-end 영역에서 답변을 가져와 DialogFlow에서 Line으로 전달하여 Chat bot 서비스를 구현  
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73146678/135220998-afddf15e-f91a-42a8-af0c-4611c9dd6ee2.png"  width="350" height="200"/>
+  <img src="https://user-images.githubusercontent.com/73146678/135220998-afddf15e-f91a-42a8-af0c-4611c9dd6ee2.png"  width="250" height="150"/>
 </p>
   
 
@@ -33,6 +33,9 @@
  2. 강릉 관련 키워드를 통한 연결이나 webUrl로의 연결의 이동 유도
  3. 필요한 데이터나 연결 Url을 Back-End 영역에서 처리해 전달
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73146678/135221392-028e7a8c-d0c5-4531-a49b-06e27fb86a88.png"  width="250" height="300"/>
+</p>
 
 #### 맛집 추천 서비스
 
@@ -40,12 +43,20 @@
  2. 크롤링과 Naver Open API를 활용하여 쌓은 Data base를 이용하여 사용자에게 추천
  3. 식당 이미지, 별점, 가격대, 영업시간을 제공
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73146678/135221392-028e7a8c-d0c5-4531-a49b-06e27fb86a88.png"  width="250" height="300"/>
+</p>
 
 
 #### 부가 정보
 
  1. 사용자에게 식당을 추천해줬을 때 버튼 형식으로 다양한 부자 정보 제공
  2. 메뉴, 네이버 지도, 식당 전화번호, 주변 관광 명소에 대한 부가 정보
+
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73146678/135221392-028e7a8c-d0c5-4531-a49b-06e27fb86a88.png"  width="250" height="300"/>
+</p>
 
 #### '릉이' 추천 맛집
 
