@@ -102,7 +102,8 @@
 | 멘티 | 역할 | Contact | 
 | ------ | ------ | ------ |
 | 권기호 | 프로젝트 관리 총괄 및 정기회의 일정 수립, 요구사항 정의 및 시스템 설계, Back-End 개발| [Github](https://github.com/Chocochip101), [Blog](https://chocochip101.tistory.com/), [Email](chocochip.dev@gmail.com) |
-| 남주연 | - | - |
-| 이성호 | - | - |
+| 남주연 | - | [Github](https://github.com/NamJuYeon) |
+| 이성호 | - | [Github](https://github.com/sean03101) |
+
 
 
