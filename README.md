@@ -55,7 +55,7 @@
 
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73146678/135221392-028e7a8c-d0c5-4531-a49b-06e27fb86a88.png"  width="250" height="300"/>
+  <img src="https://user-images.githubusercontent.com/73146678/135222590-2062146b-851b-4f01-9726-ac3271aa7888.png"  width="350" height="200"/>
 </p>
 
 #### '릉이' 추천 맛집
