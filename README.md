@@ -70,7 +70,7 @@
  1.  추가 예정
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73146678/135222947-3c15eb81-c7ba-405a-a128-6cc03cb706b7.png"  width="350" height="190"/>
+  <img src="https://user-images.githubusercontent.com/73146678/135222947-3c15eb81-c7ba-405a-a128-6cc03cb706b7.png"  width="400" height="200"/>
 </p>
 
 ## 구성도
